@@ -4,7 +4,6 @@ import java.util.*;
 
 public class Graph {
     // Feature 2 commit
-    // Feature 3: add edges to the graph
     // Feature 4: export graph to DOT and PNG using Graphviz
     // store nodes
     private Set<String> nodes;
@@ -35,6 +34,7 @@ public class Graph {
         }
 
     }
+    // Feature 3: add edges to the graph
     public void addEdge(String srcLabel, String dstLabel) {
 
         // add nodes automatically if they don't exist
