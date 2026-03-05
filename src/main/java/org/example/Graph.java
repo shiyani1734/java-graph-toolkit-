@@ -5,6 +5,7 @@ import java.util.*;
 public class Graph {
     // Feature 2 commit
     // Feature 4: export graph to DOT and PNG using Graphviz
+    // Feature 4: export graph to DOT and PNG
     // store nodes
     private Set<String> nodes;
 
