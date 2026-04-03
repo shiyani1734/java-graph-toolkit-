@@ -79,4 +79,84 @@ public class GraphTest {
         assertFalse(output.contains("A -> B"));
         assertFalse(output.contains("C -> A"));
     }
+    @Test
+    void testRemoveMultipleNodes() {
+
+        System.out.println("Running testRemoveMultipleNodes");
+
+        Graph graph = new Graph();
+
+        graph.addNode("A");
+        graph.addNode("B");
+        graph.addNode("C");
+        graph.addNode("D");
+
+        graph.addEdge("A", "B");
+        graph.addEdge("B", "C");
+        graph.addEdge("C", "D");
+
+        String[] nodesToRemove = {"A", "C"};
+        graph.removeNodes(nodesToRemove);
+
+        String output = graph.toString();
+
+        System.out.println(output);
+
+        assertTrue(output.contains("Number of nodes: 2"));
+        assertTrue(output.contains("Number of edges: 0"));
+        assertFalse(output.contains("A -> B"));
+        assertFalse(output.contains("B -> C"));
+        assertFalse(output.contains("C -> D"));
+    }
+    @Test
+    void testRemoveEdge() {
+
+        System.out.println("Running testRemoveEdge");
+
+        Graph graph = new Graph();
+
+        graph.addNode("A");
+        graph.addNode("B");
+        graph.addNode("C");
+
+        graph.addEdge("A", "B");
+        graph.addEdge("B", "C");
+        graph.addEdge("C", "A");
+
+        graph.removeEdge("C", "A");
+
+        String output = graph.toString();
+
+        System.out.println(output);
+
+        assertTrue(output.contains("Number of nodes: 3"));
+        assertTrue(output.contains("Number of edges: 2"));
+        assertTrue(output.contains("A -> B"));
+        assertTrue(output.contains("B -> C"));
+        assertFalse(output.contains("C -> A"));
+    }
+    @Test
+    void testRemoveNodeThatDoesNotExist() {
+
+        System.out.println("Running testRemoveNodeThatDoesNotExist");
+
+        Graph graph = new Graph();
+        graph.addNode("A");
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            graph.removeNode("Z");
+        });
+    }
+    @Test
+    void testRemoveEdgeThatDoesNotExist() {
+
+        System.out.println("Running testRemoveEdgeThatDoesNotExist");
+
+        Graph graph = new Graph();
+        graph.addEdge("A", "B");
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            graph.removeEdge("B", "C");
+        });
+    }
 }

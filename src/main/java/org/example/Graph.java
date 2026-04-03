@@ -52,6 +52,33 @@ public class Graph {
         // add new edge
         edges.add(new String[]{srcLabel, dstLabel});
     }
+    public void removeNode(String label) {
+
+        if (!nodes.contains(label)) {
+            throw new IllegalArgumentException("Node does not exist: " + label);
+        }
+
+        // remove the node
+        nodes.remove(label);
+
+        // remove all connected edges
+        edges.removeIf(edge -> edge[0].equals(label) || edge[1].equals(label));
+    }
+    public void removeNodes(String[] label) {
+
+        for (String s : label) {
+            removeNode(s);
+        }
+    }
+    public void removeEdge(String srcLabel, String dstLabel) {
+
+        boolean removed = edges.removeIf(edge ->
+                edge[0].equals(srcLabel) && edge[1].equals(dstLabel));
+
+        if (!removed) {
+            throw new IllegalArgumentException("Edge does not exist: " + srcLabel + " -> " + dstLabel);
+        }
+    }
     public void parseGraph(String filepath) {
 
         try {
