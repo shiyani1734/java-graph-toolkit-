@@ -108,6 +108,58 @@ public class Graph {
         }
 
     }
+    private List<Node> getNeighbors(Node node) {
+        List<Node> neighbors = new ArrayList<>();
+
+        for (String[] edge : edges) {
+            if (edge[0].equals(node.getLabel())) {
+                neighbors.add(new Node(edge[1]));
+            }
+        }
+
+        return neighbors;
+    }
+    public Path GraphSearch(Node src, Node dst) {
+
+        if (src == null || dst == null) {
+            return null;
+        }
+
+        Queue<Node> queue = new LinkedList<>();
+        Set<Node> visited = new HashSet<>();
+        Map<Node, Node> parent = new HashMap<>();
+
+        visited.add(src);
+        queue.offer(src);
+
+        while (!queue.isEmpty()) {
+            Node current = queue.poll();
+
+            if (current.equals(dst)) {
+                List<Node> pathNodes = new ArrayList<>();
+                Node step = dst;
+
+                while (step != null) {
+                    pathNodes.add(step);
+                    step = parent.get(step);
+                }
+
+                Collections.reverse(pathNodes);
+                return new Path(pathNodes);
+            }
+
+            for (Node neighbor : getNeighbors(current)) {
+                if (!visited.contains(neighbor)) {
+                    visited.add(neighbor);
+                    parent.put(neighbor, current);
+                    queue.offer(neighbor);
+                }
+            }
+        }
+
+        return null;
+    }
+
     @Override
     public String toString() {
 

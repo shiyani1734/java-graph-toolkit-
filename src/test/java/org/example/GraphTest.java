@@ -159,4 +159,34 @@ public class GraphTest {
             graph.removeEdge("B", "C");
         });
     }
+    @Test
+    void testGraphSearchBFSPathExists() {
+
+        System.out.println("Running testGraphSearchBFSPathExists");
+
+        Graph graph = new Graph();
+
+        graph.addEdge("A", "B");
+        graph.addEdge("B", "C");
+        graph.addEdge("C", "D");
+
+        Path path = graph.GraphSearch(new Node("A"), new Node("D"));
+
+        assertNotNull(path);
+        assertEquals("A -> B -> C -> D", path.toString());
+    }
+    @Test
+    void testGraphSearchBFSNoPath() {
+
+        System.out.println("Running testGraphSearchBFSNoPath");
+
+        Graph graph = new Graph();
+
+        graph.addEdge("A", "B");
+        graph.addEdge("C", "D");
+
+        Path path = graph.GraphSearch(new Node("A"), new Node("D"));
+
+        assertNull(path);
+    }
 }
