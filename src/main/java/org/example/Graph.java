@@ -107,6 +107,62 @@ public class Graph {
             e.printStackTrace();
         }
 
+
+    }
+    private List<Node> getNeighbors(Node node) {
+        List<Node> neighbors = new ArrayList<>();
+
+        for (String[] edge : edges) {
+            if (edge[0].equals(node.getLabel())) {
+                neighbors.add(new Node(edge[1]));
+            }
+        }
+
+        return neighbors;
+    }
+    public Path GraphSearch(Node src, Node dst) {
+
+        if (src == null || dst == null) {
+            return null;
+        }
+
+        Stack<Node> stack = new Stack<>();
+        Set<Node> visited = new HashSet<>();
+        Map<Node, Node> parent = new HashMap<>();
+
+        stack.push(src);
+
+        while (!stack.isEmpty()) {
+            Node current = stack.pop();
+
+            if (!visited.contains(current)) {
+                visited.add(current);
+
+                if (current.equals(dst)) {
+                    List<Node> pathNodes = new ArrayList<>();
+                    Node step = dst;
+
+                    while (step != null) {
+                        pathNodes.add(step);
+                        step = parent.get(step);
+                    }
+
+                    Collections.reverse(pathNodes);
+                    return new Path(pathNodes);
+                }
+
+                for (Node neighbor : getNeighbors(current)) {
+                    if (!visited.contains(neighbor)) {
+                        if (!parent.containsKey(neighbor)) {
+                            parent.put(neighbor, current);
+                        }
+                        stack.push(neighbor);
+                    }
+                }
+            }
+        }
+
+        return null;
     }
     @Override
     public String toString() {
