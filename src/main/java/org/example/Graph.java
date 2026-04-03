@@ -107,6 +107,7 @@ public class Graph {
             e.printStackTrace();
         }
 
+
     }
     private List<Node> getNeighbors(Node node) {
         List<Node> neighbors = new ArrayList<>();
@@ -119,7 +120,7 @@ public class Graph {
 
         return neighbors;
     }
-    public Path GraphSearch(Node src, Node dst) {
+    private Path graphSearchBFS(Node src, Node dst) {
 
         if (src == null || dst == null) {
             return null;
@@ -157,6 +158,60 @@ public class Graph {
             }
         }
 
+        return null;
+    }
+
+    private Path graphSearchDFS(Node src, Node dst) {
+
+        if (src == null || dst == null) {
+            return null;
+        }
+
+        Stack<Node> stack = new Stack<>();
+        Set<Node> visited = new HashSet<>();
+        Map<Node, Node> parent = new HashMap<>();
+
+        stack.push(src);
+
+        while (!stack.isEmpty()) {
+            Node current = stack.pop();
+
+            if (!visited.contains(current)) {
+                visited.add(current);
+
+                if (current.equals(dst)) {
+                    List<Node> pathNodes = new ArrayList<>();
+                    Node step = dst;
+
+                    while (step != null) {
+                        pathNodes.add(step);
+                        step = parent.get(step);
+                    }
+
+                    Collections.reverse(pathNodes);
+                    return new Path(pathNodes);
+                }
+
+                for (Node neighbor : getNeighbors(current)) {
+                    if (!visited.contains(neighbor)) {
+                        if (!parent.containsKey(neighbor)) {
+                            parent.put(neighbor, current);
+                        }
+                        stack.push(neighbor);
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+    public Path GraphSearch(Node src, Node dst, Algorithm algo) {
+        if (algo == Algorithm.BFS) {
+            return graphSearchBFS(src, dst);
+        } else if (algo == Algorithm.DFS) {
+            return graphSearchDFS(src, dst);
+        }
         return null;
     }
 

@@ -53,6 +53,7 @@ public class GraphTest {
 
         assertTrue(output.contains("Number of nodes: 3"));
     }
+
     @Test
     void testRemoveNode() {
 
@@ -79,6 +80,7 @@ public class GraphTest {
         assertFalse(output.contains("A -> B"));
         assertFalse(output.contains("C -> A"));
     }
+
     @Test
     void testRemoveMultipleNodes() {
 
@@ -108,6 +110,7 @@ public class GraphTest {
         assertFalse(output.contains("B -> C"));
         assertFalse(output.contains("C -> D"));
     }
+
     @Test
     void testRemoveEdge() {
 
@@ -135,6 +138,7 @@ public class GraphTest {
         assertTrue(output.contains("B -> C"));
         assertFalse(output.contains("C -> A"));
     }
+
     @Test
     void testRemoveNodeThatDoesNotExist() {
 
@@ -147,6 +151,7 @@ public class GraphTest {
             graph.removeNode("Z");
         });
     }
+
     @Test
     void testRemoveEdgeThatDoesNotExist() {
 
@@ -159,10 +164,11 @@ public class GraphTest {
             graph.removeEdge("B", "C");
         });
     }
-    @Test
-    void testGraphSearchBFSPathExists() {
 
-        System.out.println("Running testGraphSearchBFSPathExists");
+    @Test
+    void testGraphSearchWithBFS() {
+
+        System.out.println("Running testGraphSearchWithBFS");
 
         Graph graph = new Graph();
 
@@ -170,23 +176,26 @@ public class GraphTest {
         graph.addEdge("B", "C");
         graph.addEdge("C", "D");
 
-        Path path = graph.GraphSearch(new Node("A"), new Node("D"));
+        Path path = graph.GraphSearch(new Node("A"), new Node("D"), Algorithm.BFS);
 
         assertNotNull(path);
         assertEquals("A -> B -> C -> D", path.toString());
     }
-    @Test
-    void testGraphSearchBFSNoPath() {
 
-        System.out.println("Running testGraphSearchBFSNoPath");
+    @Test
+    void testGraphSearchWithDFS() {
+
+        System.out.println("Running testGraphSearchWithDFS");
 
         Graph graph = new Graph();
 
         graph.addEdge("A", "B");
+        graph.addEdge("B", "C");
         graph.addEdge("C", "D");
 
-        Path path = graph.GraphSearch(new Node("A"), new Node("D"));
+        Path path = graph.GraphSearch(new Node("A"), new Node("D"), Algorithm.DFS);
 
-        assertNull(path);
+        assertNotNull(path);
+        assertEquals("A -> B -> C -> D", path.toString());
     }
 }
