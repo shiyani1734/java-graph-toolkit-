@@ -53,4 +53,30 @@ public class GraphTest {
 
         assertTrue(output.contains("Number of nodes: 3"));
     }
+    @Test
+    void testRemoveNode() {
+
+        System.out.println("Running testRemoveNode");
+
+        Graph graph = new Graph();
+        graph.addNode("A");
+        graph.addNode("B");
+        graph.addNode("C");
+
+        graph.addEdge("A", "B");
+        graph.addEdge("B", "C");
+        graph.addEdge("C", "A");
+
+        graph.removeNode("A");
+
+        String output = graph.toString();
+
+        System.out.println(output);
+
+        assertTrue(output.contains("Number of nodes: 2"));
+        assertTrue(output.contains("Number of edges: 1"));
+        assertTrue(output.contains("B -> C"));
+        assertFalse(output.contains("A -> B"));
+        assertFalse(output.contains("C -> A"));
+    }
 }
