@@ -59,6 +59,12 @@ public class Graph {
             throw new IllegalArgumentException("Edge does not exist: " + srcLabel + " -> " + dstLabel);
         }
     }
+    private Node getNodeByLabel(String label) {
+        if (label == null || !nodes.contains(label)) {
+            return null;
+        }
+        return new Node(label);
+    }
 
     public void parseGraph(String filepath) {
         try {
@@ -195,6 +201,12 @@ public class Graph {
         }
 
         return null;
+    }
+    public Path GraphSearch(String src, String dst, Algorithm algo) {
+        Node srcNode = getNodeByLabel(src);
+        Node dstNode = getNodeByLabel(dst);
+
+        return GraphSearch(srcNode, dstNode, algo);
     }
 
     public Path GraphSearch(Node src, Node dst, Algorithm algo) {
