@@ -160,7 +160,6 @@ public class Graph {
 
         return null;
     }
-
     private Path graphSearchDFS(Node src, Node dst) {
 
         if (src == null || dst == null) {
@@ -192,7 +191,11 @@ public class Graph {
                     return new Path(pathNodes);
                 }
 
-                for (Node neighbor : getNeighbors(current)) {
+                List<Node> neighbors = getNeighbors(current);
+
+                for (int i = neighbors.size() - 1; i >= 0; i--) {
+                    Node neighbor = neighbors.get(i);
+
                     if (!visited.contains(neighbor)) {
                         if (!parent.containsKey(neighbor)) {
                             parent.put(neighbor, current);
