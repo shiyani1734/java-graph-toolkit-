@@ -18,8 +18,11 @@ public abstract class AbstractGraphSearch {
         while (!isFrontierEmpty()) {
             Node current = removeNextNode();
 
+            Path currentPath = buildPath(current, parent);
+            System.out.println("visiting " + currentPath);
+
             if (current.equals(dst)) {
-                return buildPath(dst, parent);
+                return currentPath;
             }
 
             processNeighbors(current, graph, visited, parent);
