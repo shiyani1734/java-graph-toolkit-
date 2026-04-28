@@ -4,6 +4,7 @@ import java.util.*;
 
 public abstract class AbstractGraphSearch {
 
+    // Template method: defines the fixed search algorithm structure.
     public Path search(Node src, Node dst, Graph graph) {
         if (src == null || dst == null) {
             return null;
@@ -31,6 +32,7 @@ public abstract class AbstractGraphSearch {
         return null;
     }
 
+    // Shared helper for building the final or current path.
     protected Path buildPath(Node dst, Map<Node, Node> parent) {
         List<Node> pathNodes = new ArrayList<>();
         Node step = dst;
@@ -44,6 +46,7 @@ public abstract class AbstractGraphSearch {
         return new Path(pathNodes);
     }
 
+    // Shared neighbor-processing step used by all search algorithms.
     protected void processNeighbors(Node current, Graph graph,
                                     Set<Node> visited, Map<Node, Node> parent) {
         List<Node> neighbors = graph.getNeighborsForSearch(current);
@@ -57,15 +60,20 @@ public abstract class AbstractGraphSearch {
         }
     }
 
+    // Hook method: subclasses can override neighbor order if needed.
     protected List<Node> orderNeighbors(List<Node> neighbors) {
         return neighbors;
     }
 
+    // Subclass step: define how the search frontier starts.
     protected abstract void initializeFrontier(Node src);
 
+    // Subclass step: define when the frontier is empty.
     protected abstract boolean isFrontierEmpty();
 
+    // Subclass step: define how the next node is selected.
     protected abstract Node removeNextNode();
 
+    // Subclass step: define how a node is added to the frontier.
     protected abstract void addNodeToFrontier(Node node);
 }
