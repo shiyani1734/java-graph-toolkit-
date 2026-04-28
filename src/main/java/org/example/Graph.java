@@ -3,33 +3,26 @@ package org.example;
 import java.util.*;
 
 public class Graph {
-    // store nodes
     private Set<String> nodes;
-
-    // store edges
     private List<String[]> edges;
 
-    // constructor
     public Graph() {
         nodes = new HashSet<>();
         edges = new ArrayList<>();
     }
 
-    // add a single node
     public void addNode(String label) {
         if (!nodes.contains(label)) {
             nodes.add(label);
         }
     }
 
-    // add multiple nodes
     public void addNodes(String[] label) {
         for (String s : label) {
             addNode(s);
         }
     }
 
-    // add edge to graph
     public void addEdge(String srcLabel, String dstLabel) {
         addNode(srcLabel);
         addNode(dstLabel);
@@ -121,6 +114,17 @@ public class Graph {
         return new Path(pathNodes);
     }
 
+    private void processBFSNeighbors(Node current, Queue<Node> queue,
+                                     Set<Node> visited, Map<Node, Node> parent) {
+        for (Node neighbor : getNeighbors(current)) {
+            if (!visited.contains(neighbor)) {
+                visited.add(neighbor);
+                parent.put(neighbor, current);
+                queue.offer(neighbor);
+            }
+        }
+    }
+
     private Path searchWithBFS(Node src, Node dst) {
         if (isInvalidSearchInput(src, dst)) {
             return null;
@@ -140,13 +144,7 @@ public class Graph {
                 return buildPath(dst, parent);
             }
 
-            for (Node neighbor : getNeighbors(current)) {
-                if (!visited.contains(neighbor)) {
-                    visited.add(neighbor);
-                    parent.put(neighbor, current);
-                    queue.offer(neighbor);
-                }
-            }
+            processBFSNeighbors(current, queue, visited, parent);
         }
 
         return null;
