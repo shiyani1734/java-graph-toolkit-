@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
 
-public class DFSSearch extends AbstractGraphSearch {
+public class DFSSearch extends AbstractGraphSearch implements SearchStrategy {
     private Stack<Node> stack;
 
     @Override

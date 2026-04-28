@@ -3,7 +3,7 @@ package org.example;
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class BFSSearch extends AbstractGraphSearch {
+public class BFSSearch extends AbstractGraphSearch implements SearchStrategy {
     private Queue<Node> queue;
 
     @Override
