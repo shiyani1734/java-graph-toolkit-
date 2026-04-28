@@ -125,6 +125,22 @@ public class Graph {
         }
     }
 
+    private void processDFSNeighbors(Node current, Stack<Node> stack,
+                                     Set<Node> visited, Map<Node, Node> parent) {
+        List<Node> neighbors = getNeighbors(current);
+
+        for (int i = neighbors.size() - 1; i >= 0; i--) {
+            Node neighbor = neighbors.get(i);
+
+            if (!visited.contains(neighbor)) {
+                if (!parent.containsKey(neighbor)) {
+                    parent.put(neighbor, current);
+                }
+                stack.push(neighbor);
+            }
+        }
+    }
+
     private Path searchWithBFS(Node src, Node dst) {
         if (isInvalidSearchInput(src, dst)) {
             return null;
@@ -171,18 +187,7 @@ public class Graph {
                     return buildPath(dst, parent);
                 }
 
-                List<Node> neighbors = getNeighbors(current);
-
-                for (int i = neighbors.size() - 1; i >= 0; i--) {
-                    Node neighbor = neighbors.get(i);
-
-                    if (!visited.contains(neighbor)) {
-                        if (!parent.containsKey(neighbor)) {
-                            parent.put(neighbor, current);
-                        }
-                        stack.push(neighbor);
-                    }
-                }
+                processDFSNeighbors(current, stack, visited, parent);
             }
         }
 
