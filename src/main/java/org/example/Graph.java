@@ -59,6 +59,7 @@ public class Graph {
             throw new IllegalArgumentException("Edge does not exist: " + srcLabel + " -> " + dstLabel);
         }
     }
+
     private Node getNodeByLabel(String label) {
         if (label == null || !nodes.contains(label)) {
             return null;
@@ -91,9 +92,6 @@ public class Graph {
         }
     }
 
-    private boolean isInvalidSearchInput(Node src, Node dst) {
-        return src == null || dst == null;
-    }
     public List<Node> getNeighborsForSearch(Node node) {
         return getNeighbors(node);
     }
@@ -110,98 +108,6 @@ public class Graph {
         return neighbors;
     }
 
-    private Path buildPath(Node dst, Map<Node, Node> parent) {
-        List<Node> pathNodes = new ArrayList<>();
-        Node step = dst;
-
-        while (step != null) {
-            pathNodes.add(step);
-            step = parent.get(step);
-        }
-
-        Collections.reverse(pathNodes);
-        return new Path(pathNodes);
-    }
-
-    private void processBFSNeighbors(Node current, Queue<Node> queue,
-                                     Set<Node> visited, Map<Node, Node> parent) {
-        for (Node neighbor : getNeighbors(current)) {
-            if (!visited.contains(neighbor)) {
-                visited.add(neighbor);
-                parent.put(neighbor, current);
-                queue.offer(neighbor);
-            }
-        }
-    }
-
-    private void processDFSNeighbors(Node current, Stack<Node> stack,
-                                     Set<Node> visited, Map<Node, Node> parent) {
-        List<Node> neighbors = getNeighbors(current);
-
-        for (int i = neighbors.size() - 1; i >= 0; i--) {
-            Node neighbor = neighbors.get(i);
-
-            if (!visited.contains(neighbor)) {
-                if (!parent.containsKey(neighbor)) {
-                    parent.put(neighbor, current);
-                }
-                stack.push(neighbor);
-            }
-        }
-    }
-
-    private Path searchWithBFS(Node src, Node dst) {
-        if (isInvalidSearchInput(src, dst)) {
-            return null;
-        }
-
-        Queue<Node> queue = new LinkedList<>();
-        Set<Node> visited = new HashSet<>();
-        Map<Node, Node> parent = new HashMap<>();
-
-        visited.add(src);
-        queue.offer(src);
-
-        while (!queue.isEmpty()) {
-            Node current = queue.poll();
-
-            if (current.equals(dst)) {
-                return buildPath(dst, parent);
-            }
-
-            processBFSNeighbors(current, queue, visited, parent);
-        }
-
-        return null;
-    }
-
-    private Path searchWithDFS(Node src, Node dst) {
-        if (isInvalidSearchInput(src, dst)) {
-            return null;
-        }
-
-        Stack<Node> stack = new Stack<>();
-        Set<Node> visited = new HashSet<>();
-        Map<Node, Node> parent = new HashMap<>();
-
-        stack.push(src);
-
-        while (!stack.isEmpty()) {
-            Node current = stack.pop();
-
-            if (!visited.contains(current)) {
-                visited.add(current);
-
-                if (current.equals(dst)) {
-                    return buildPath(dst, parent);
-                }
-
-                processDFSNeighbors(current, stack, visited, parent);
-            }
-        }
-
-        return null;
-    }
     public Path GraphSearch(String src, String dst, Algorithm algo) {
         Node srcNode = getNodeByLabel(src);
         Node dstNode = getNodeByLabel(dst);
@@ -224,7 +130,6 @@ public class Graph {
 
         return strategy.search(src, dst, this);
     }
-
 
     @Override
     public String toString() {
