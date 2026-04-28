@@ -88,6 +88,9 @@ public class Graph {
     private boolean isInvalidSearchInput(Node src, Node dst) {
         return src == null || dst == null;
     }
+    public List<Node> getNeighborsForSearch(Node node) {
+        return getNeighbors(node);
+    }
 
     private List<Node> getNeighbors(Node node) {
         List<Node> neighbors = new ArrayList<>();
@@ -196,9 +199,9 @@ public class Graph {
 
     public Path GraphSearch(Node src, Node dst, Algorithm algo) {
         if (algo == Algorithm.BFS) {
-            return searchWithBFS(src, dst);
+            return new BFSSearch().search(src, dst, this);
         } else if (algo == Algorithm.DFS) {
-            return searchWithDFS(src, dst);
+            return new DFSSearch().search(src, dst, this);
         }
         return null;
     }
