@@ -31,6 +31,7 @@ public class RandomWalkSearch extends AbstractGraphSearch implements SearchStrat
 
     @Override
     protected void addNodeToFrontier(Node node) {
+        // Random walk keeps only one next node in the frontier at a time.
         frontier.clear();
         frontier.add(node);
     }
