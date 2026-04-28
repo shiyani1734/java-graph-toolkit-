@@ -92,6 +92,10 @@ public class Graph {
         }
     }
 
+    private boolean isInvalidSearchInput(Node src, Node dst) {
+        return src == null || dst == null;
+    }
+
     private List<Node> getNeighbors(Node node) {
         List<Node> neighbors = new ArrayList<>();
 
@@ -118,7 +122,7 @@ public class Graph {
     }
 
     private Path searchWithBFS(Node src, Node dst) {
-        if (src == null || dst == null) {
+        if (isInvalidSearchInput(src, dst)) {
             return null;
         }
 
@@ -149,7 +153,7 @@ public class Graph {
     }
 
     private Path searchWithDFS(Node src, Node dst) {
-        if (src == null || dst == null) {
+        if (isInvalidSearchInput(src, dst)) {
             return null;
         }
 
