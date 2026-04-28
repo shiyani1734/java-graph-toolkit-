@@ -117,7 +117,7 @@ public class Graph {
         return new Path(pathNodes);
     }
 
-    private Path graphSearchBFS(Node src, Node dst) {
+    private Path searchWithBFS(Node src, Node dst) {
         if (src == null || dst == null) {
             return null;
         }
@@ -148,7 +148,7 @@ public class Graph {
         return null;
     }
 
-    private Path graphSearchDFS(Node src, Node dst) {
+    private Path searchWithDFS(Node src, Node dst) {
         if (src == null || dst == null) {
             return null;
         }
@@ -189,9 +189,9 @@ public class Graph {
 
     public Path GraphSearch(Node src, Node dst, Algorithm algo) {
         if (algo == Algorithm.BFS) {
-            return graphSearchBFS(src, dst);
+            return searchWithBFS(src, dst);
         } else if (algo == Algorithm.DFS) {
-            return graphSearchDFS(src, dst);
+            return searchWithDFS(src, dst);
         }
         return null;
     }
