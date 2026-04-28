@@ -3,9 +3,6 @@ package org.example;
 import java.util.*;
 
 public class Graph {
-    // Feature 2 commit
-    // Feature 4: export graph to DOT and PNG using Graphviz
-    // Feature 4: export graph to DOT and PNG
     // store nodes
     private Set<String> nodes;
 
@@ -18,60 +15,50 @@ public class Graph {
         edges = new ArrayList<>();
     }
 
-    // Feature 2: add a single node
+    // add a single node
     public void addNode(String label) {
-
         if (!nodes.contains(label)) {
             nodes.add(label);
         }
-
     }
 
-    // Feature 2: add multiple nodes
+    // add multiple nodes
     public void addNodes(String[] label) {
-
         for (String s : label) {
             addNode(s);
         }
-
     }
-    // Feature 3: add edges to the graph
-    public void addEdge(String srcLabel, String dstLabel) {
 
-        // add nodes automatically if they don't exist
+    // add edge to graph
+    public void addEdge(String srcLabel, String dstLabel) {
         addNode(srcLabel);
         addNode(dstLabel);
 
-        // check if edge already exists
         for (String[] edge : edges) {
             if (edge[0].equals(srcLabel) && edge[1].equals(dstLabel)) {
-                return; // duplicate edge
+                return;
             }
         }
 
-        // add new edge
         edges.add(new String[]{srcLabel, dstLabel});
     }
-    public void removeNode(String label) {
 
+    public void removeNode(String label) {
         if (!nodes.contains(label)) {
             throw new IllegalArgumentException("Node does not exist: " + label);
         }
 
-        // remove the node
         nodes.remove(label);
-
-        // remove all connected edges
         edges.removeIf(edge -> edge[0].equals(label) || edge[1].equals(label));
     }
-    public void removeNodes(String[] label) {
 
+    public void removeNodes(String[] label) {
         for (String s : label) {
             removeNode(s);
         }
     }
-    public void removeEdge(String srcLabel, String dstLabel) {
 
+    public void removeEdge(String srcLabel, String dstLabel) {
         boolean removed = edges.removeIf(edge ->
                 edge[0].equals(srcLabel) && edge[1].equals(dstLabel));
 
@@ -79,18 +66,16 @@ public class Graph {
             throw new IllegalArgumentException("Edge does not exist: " + srcLabel + " -> " + dstLabel);
         }
     }
-    public void parseGraph(String filepath) {
 
+    public void parseGraph(String filepath) {
         try {
             java.io.BufferedReader reader = new java.io.BufferedReader(new java.io.FileReader(filepath));
             String line;
 
             while ((line = reader.readLine()) != null) {
-
                 line = line.trim();
 
                 if (line.contains("->")) {
-
                     String[] parts = line.replace(";", "").split("->");
 
                     String src = parts[0].trim();
@@ -98,7 +83,6 @@ public class Graph {
 
                     addEdge(src, dst);
                 }
-
             }
 
             reader.close();
@@ -106,9 +90,8 @@ public class Graph {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
     }
+
     private List<Node> getNeighbors(Node node) {
         List<Node> neighbors = new ArrayList<>();
 
@@ -120,8 +103,21 @@ public class Graph {
 
         return neighbors;
     }
-    private Path graphSearchBFS(Node src, Node dst) {
 
+    private Path buildPath(Node dst, Map<Node, Node> parent) {
+        List<Node> pathNodes = new ArrayList<>();
+        Node step = dst;
+
+        while (step != null) {
+            pathNodes.add(step);
+            step = parent.get(step);
+        }
+
+        Collections.reverse(pathNodes);
+        return new Path(pathNodes);
+    }
+
+    private Path graphSearchBFS(Node src, Node dst) {
         if (src == null || dst == null) {
             return null;
         }
@@ -137,16 +133,7 @@ public class Graph {
             Node current = queue.poll();
 
             if (current.equals(dst)) {
-                List<Node> pathNodes = new ArrayList<>();
-                Node step = dst;
-
-                while (step != null) {
-                    pathNodes.add(step);
-                    step = parent.get(step);
-                }
-
-                Collections.reverse(pathNodes);
-                return new Path(pathNodes);
+                return buildPath(dst, parent);
             }
 
             for (Node neighbor : getNeighbors(current)) {
@@ -160,8 +147,8 @@ public class Graph {
 
         return null;
     }
-    private Path graphSearchDFS(Node src, Node dst) {
 
+    private Path graphSearchDFS(Node src, Node dst) {
         if (src == null || dst == null) {
             return null;
         }
@@ -179,16 +166,7 @@ public class Graph {
                 visited.add(current);
 
                 if (current.equals(dst)) {
-                    List<Node> pathNodes = new ArrayList<>();
-                    Node step = dst;
-
-                    while (step != null) {
-                        pathNodes.add(step);
-                        step = parent.get(step);
-                    }
-
-                    Collections.reverse(pathNodes);
-                    return new Path(pathNodes);
+                    return buildPath(dst, parent);
                 }
 
                 List<Node> neighbors = getNeighbors(current);
@@ -220,7 +198,6 @@ public class Graph {
 
     @Override
     public String toString() {
-
         StringBuilder sb = new StringBuilder();
 
         sb.append("Number of nodes: ").append(nodes.size()).append("\n");
@@ -240,22 +217,18 @@ public class Graph {
 
         return sb.toString();
     }
-    public void outputGraph(String filepath) {
 
+    public void outputGraph(String filepath) {
         try {
             java.io.BufferedWriter writer = new java.io.BufferedWriter(new java.io.FileWriter(filepath));
-
             writer.write(this.toString());
-
             writer.close();
-
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
-    public void outputDOTGraph(String path) {
 
+    public void outputDOTGraph(String path) {
         try {
             java.io.BufferedWriter writer = new java.io.BufferedWriter(new java.io.FileWriter(path));
 
@@ -266,26 +239,20 @@ public class Graph {
             }
 
             writer.write("}\n");
-
             writer.close();
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
+
     public void outputGraphics(String path, String format) {
-
         try {
-
-            // create DOT file first
             String dotFile = path + ".dot";
             outputDOTGraph(dotFile);
 
-            // output image file
             String outputFile = path + "." + format;
 
-            // run Graphviz command
             ProcessBuilder pb = new ProcessBuilder(
                     "dot",
                     "-T" + format,
@@ -299,6 +266,5 @@ public class Graph {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 }
