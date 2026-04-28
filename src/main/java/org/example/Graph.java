@@ -198,12 +198,17 @@ public class Graph {
     }
 
     public Path GraphSearch(Node src, Node dst, Algorithm algo) {
+        SearchStrategy strategy;
+
         if (algo == Algorithm.BFS) {
-            return new BFSSearch().search(src, dst, this);
+            strategy = new BFSSearch();
         } else if (algo == Algorithm.DFS) {
-            return new DFSSearch().search(src, dst, this);
+            strategy = new DFSSearch();
+        } else {
+            return null;
         }
-        return null;
+
+        return strategy.search(src, dst, this);
     }
 
     @Override
