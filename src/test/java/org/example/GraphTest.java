@@ -213,4 +213,37 @@ public class GraphTest {
         assertNotNull(path);
         assertEquals("a -> b -> c", path.toString());
     }
+    @Test
+    void testGraphSearchWithBFSUsingStrings() {
+
+        System.out.println("Running testGraphSearchWithBFSUsingStrings");
+
+        Graph graph = new Graph();
+
+        graph.addEdge("a", "b");
+        graph.addEdge("b", "c");
+        graph.addEdge("c", "d");
+
+        Path path = graph.GraphSearch("a", "d", Algorithm.BFS);
+
+        assertNotNull(path);
+        assertEquals("a -> b -> c -> d", path.toString());
+    }
+
+    @Test
+    void testGraphSearchWithDFSUsingStrings() {
+
+        System.out.println("Running testGraphSearchWithDFSUsingStrings");
+
+        Graph graph = new Graph();
+
+        graph.addEdge("a", "b");
+        graph.addEdge("b", "c");
+        graph.addEdge("c", "d");
+
+        Path path = graph.GraphSearch("a", "d", Algorithm.DFS);
+
+        assertNotNull(path);
+        assertEquals("a -> b -> c -> d", path.toString());
+    }
 }
