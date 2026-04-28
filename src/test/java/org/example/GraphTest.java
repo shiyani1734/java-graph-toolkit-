@@ -198,4 +198,19 @@ public class GraphTest {
         assertNotNull(path);
         assertEquals("A -> B -> C -> D", path.toString());
     }
+    @Test
+    void testGraphSearchWithRandomWalk() {
+
+        System.out.println("Running testGraphSearchWithRandomWalk");
+
+        Graph graph = new Graph();
+
+        graph.addEdge("a", "b");
+        graph.addEdge("b", "c");
+
+        Path path = graph.GraphSearch("a", "c", Algorithm.RANDOM_WALK);
+
+        assertNotNull(path);
+        assertEquals("a -> b -> c", path.toString());
+    }
 }

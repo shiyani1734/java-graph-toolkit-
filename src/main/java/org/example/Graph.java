@@ -216,12 +216,15 @@ public class Graph {
             strategy = new BFSSearch();
         } else if (algo == Algorithm.DFS) {
             strategy = new DFSSearch();
+        } else if (algo == Algorithm.RANDOM_WALK) {
+            strategy = new RandomWalkSearch();
         } else {
             return null;
         }
 
         return strategy.search(src, dst, this);
     }
+
 
     @Override
     public String toString() {
