@@ -2,5 +2,6 @@ package org.example;
 
 public enum Algorithm {
     BFS,
-    DFS
+    DFS,
+    RANDOM_WALK
 }
